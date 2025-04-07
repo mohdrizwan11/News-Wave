@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash News</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the News Application</h1>
+        <form action="/news" method="POST">
+            <label for="country">Select Country:</label>
+            <select name="country" id="country">
+                <option value="us">United States</option>
+                <option value="in" selected>India</option>
+                <option value="gb">United Kingdom</option>
+                <option value="au">Australia</option>
+            </select>
+
+            <label for="category">Select Category:</label>
+            <select name="category" id="category">
+                <option value="business">Business</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="general">General</option>
+                <option value="health">Health</option>
+                <option value="science">Science</option>
+                <option value="sports">Sports</option>
+                <option value="technology">Technology</option>
+            </select>
+
+            <button type="submit">Get News</button>
+        </form>
+        <h2>Current Headlines</h2>
+        <ul>
+            {% for article in articles %}
+            <li>
+                <h2><a href="{{ article.url }}" target="_blank">{{ article.title }}</a></h2>
+                <p>{{ article.description }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
