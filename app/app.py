@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify
+from flask_caching import Cache
 from newsapi import NewsApiClient
 import sys
 import os
@@ -13,6 +14,9 @@ from config import config
 app = Flask(__name__)
 config_name = os.environ.get('FLASK_CONFIG') or 'default'
 app.config.from_object(config[config_name])
+
+# Initialize caching
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 # Init news api
 newsapi = NewsApiClient(api_key=app.config['NEWS_API_KEY'])
@@ -41,12 +45,41 @@ categories = [
     {"code": "technology", "name": "Technology"},
 ]
 
+# API usage tracking
+api_calls_today = 0
+daily_limit = 100
+
+def track_api_call():
+    global api_calls_today
+    api_calls_today += 1
+    app.logger.info(f'API calls today: {api_calls_today}/{daily_limit}')
+    return api_calls_today < daily_limit
+
+@app.route("/api-status")
+def api_status():
+    return jsonify({
+        'calls_made': api_calls_today,
+        'daily_limit': daily_limit,
+        'remaining': daily_limit - api_calls_today
+    })
+
 @app.route("/", methods=['GET', 'POST'])
 def home():
     try:
+        if not track_api_call():
+            # API limit reached, show cached content or error message
+            return render_template("limit_reached.html", categories=categories)
+            
         if request.method == "POST":
             keyword = request.form.get("keyword")
             category = request.form.get("category")
+            
+            # Create cache key based on search parameters
+            cache_key = f"news_{keyword}_{category}"
+            cached_result = cache.get(cache_key)
+            
+            if cached_result:
+                return cached_result
             
             if keyword:
                 related_news = newsapi.get_everything(q=keyword, language='en', sort_by='relevancy')
@@ -55,16 +88,28 @@ def home():
                 top_headlines = newsapi.get_top_headlines(category=category, language="en")
                 articles = top_headlines['articles']
             
-            return render_template("news.html", articles=articles, keyword=keyword, category=category, categories=categories)
+            result = render_template("news.html", articles=articles, keyword=keyword, category=category, categories=categories)
+            cache.set(cache_key, result, timeout=300)  # Cache for 5 minutes
+            return result
         else:
+            cache_key = "top_headlines"
+            cached_result = cache.get(cache_key)
+            
+            if cached_result:
+                return cached_result
+                
             top_headlines = newsapi.get_top_headlines(language="en")
             articles = top_headlines['articles']
-            return render_template("news.html", articles=articles, category="", categories=categories)
+            result = render_template("news.html", articles=articles, category="", categories=categories)
+            cache.set(cache_key, result, timeout=300)
+            return result
     except Exception as e:
-        print(f"Error: {e}")
-        top_headlines = newsapi.get_top_headlines(language="en")
-        articles = top_headlines['articles']
-        return render_template("news.html", articles=articles, category="", categories=categories)
+        app.logger.error(f"Error: {e}")
+        # Return cached content if available, otherwise show error
+        cached_result = cache.get("top_headlines")
+        if cached_result:
+            return cached_result
+        return render_template("error.html", error="Service temporarily unavailable", categories=categories)
 
 @app.errorhandler(404)
 def not_found_error(error):

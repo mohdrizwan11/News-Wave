@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daily Limit Reached - News Wave</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h1 class="display-4">📈 Popular Today!</h1>
+                <div class="alert alert-info">
+                    <h4>Daily API Limit Reached</h4>
+                    <p>We've hit our daily news update limit. This means News Wave is being well-used today!</p>
+                    <p>The app will refresh with new content tomorrow. Meanwhile, you can still browse cached news.</p>
+                </div>
+                
+                <div class="mt-4">
+                    <h5>Why this happens:</h5>
+                    <p class="text-muted">
+                        News Wave uses a free news API with 100 requests per day. 
+                        When many people use the app, we reach this limit to keep the service free for everyone.
+                    </p>
+                </div>
+                
+                <a href="/" class="btn btn-primary mt-3">View Cached News</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
