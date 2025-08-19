@@ -14,10 +14,5 @@
       "src": "/(.*)",
       "dest": "wsgi.py"
     }
-  ],
-  "env": {
-    "NEWS_API_KEY": "@news_api_key",
-    "FLASK_CONFIG": "production",
-    "SECRET_KEY": "@secret_key"
-  }
+  ]
 }
