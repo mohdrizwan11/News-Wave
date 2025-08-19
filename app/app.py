@@ -22,7 +22,7 @@ cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 newsapi = NewsApiClient(api_key=app.config['NEWS_API_KEY'])
 
 # Configure logging for production
-if not app.debug:
+if not app.debug and not os.environ.get('VERCEL'):
     if not os.path.exists('logs'):
         os.mkdir('logs')
     file_handler = RotatingFileHandler('logs/newswave.log', maxBytes=10240, backupCount=10)
@@ -45,31 +45,23 @@ categories = [
     {"code": "technology", "name": "Technology"},
 ]
 
-# API usage tracking
-api_calls_today = 0
-daily_limit = 100
-
+# API usage tracking (simplified for serverless)
 def track_api_call():
-    global api_calls_today
-    api_calls_today += 1
-    app.logger.info(f'API calls today: {api_calls_today}/{daily_limit}')
-    return api_calls_today < daily_limit
+    # In serverless, we can't maintain global state
+    # This is a simplified version for demonstration
+    return True  # Always allow API calls, let NewsAPI handle rate limiting
 
 @app.route("/api-status")
 def api_status():
     return jsonify({
-        'calls_made': api_calls_today,
-        'daily_limit': daily_limit,
-        'remaining': daily_limit - api_calls_today
+        'status': 'active',
+        'message': 'API is running normally',
+        'note': 'Rate limiting handled by NewsAPI'
     })
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
     try:
-        if not track_api_call():
-            # API limit reached, show cached content or error message
-            return render_template("limit_reached.html", categories=categories)
-            
         if request.method == "POST":
             keyword = request.form.get("keyword")
             category = request.form.get("category")

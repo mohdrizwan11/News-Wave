@@ -15,9 +15,5 @@ from app.app import app
 # This is what Gunicorn and Vercel will look for
 application = app
 
-# Vercel handler
-def handler(event, context):
-    return app(event, context)
-
 if __name__ == "__main__":
     app.run()
