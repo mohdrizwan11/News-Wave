@@ -1,8 +1,7 @@
-# File: README.md
 # 🌊 News Wave - Global News Aggregation App
 
-[![Live Demo](https://img.shields.io/badge/🌍_Live_Demo-Visit_App-blue?style=for-the-badge)](https://news-wave-mohdrizwan11.vercel.app)
-[![Python](https://img.shields.io/badge/Python-3.12+-blue?style=flat-square&logo=python)](https://python.org)
+[![Live Demo](https://img.shields.io/badge/🌍_Live_Demo-Visit_App-blue?style=for-the-badge)](https://newswave-psi.vercel.app)
+[![Python](https://img.shields.io/badge/Python-3.9+-blue?style=flat-square&logo=python)](https://python.org)
 [![Flask](https://img.shields.io/badge/Flask-2.3.2-green?style=flat-square&logo=flask)](https://flask.palletsprojects.com)
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed_on-Vercel-black?style=flat-square&logo=vercel)](https://vercel.com)
 
@@ -10,9 +9,7 @@ A modern, responsive news aggregation web application that brings real-time glob
 
 ## 🚀 Live Application
 
-**🌍 [Visit News Wave](https://news-wave.vercel.app)**
-
-*Replace the URL above with your actual Vercel deployment URL once deployed*
+**🌍 [Visit News Wave - Live Demo](https://newswave-psi.vercel.app)**
 
 ## ✨ Features
 
@@ -43,7 +40,7 @@ A modern, responsive news aggregation web application that brings real-time glob
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.12+
+- Python 3.9+
 - pip package manager
 
 ### Installation
@@ -96,7 +93,7 @@ Navigate to `http://127.0.0.1:5000`
 ## 🌐 Deployment
 
 This application is optimized for deployment on:
-- **Vercel** (Current deployment)
+- **Vercel** (Current deployment: [newswave-psi.vercel.app](https://newswave-psi.vercel.app))
 - **Render**
 - **Heroku**
 - **Railway**
@@ -140,11 +137,13 @@ News-Wave/
 │       ├── news.html       # Main news page
 │       ├── 404.html        # Error pages
 │       ├── 500.html
+│       ├── error.html
 │       └── limit_reached.html
 ├── config.py               # Configuration management
 ├── wsgi.py                 # WSGI entry point
 ├── requirements.txt        # Python dependencies
 ├── vercel.json            # Vercel deployment config
+├── runtime.txt            # Python runtime specification
 ├── run.ps1                # Quick start script
 └── README.md
 
@@ -167,6 +166,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Mohd Rizwan**
 - GitHub: [@mohdrizwan11](https://github.com/mohdrizwan11)
 - LinkedIn: [Connect with me](https://www.linkedin.com/in/mohdrizwan11/)
+- Portfolio: [News Wave Live Demo](https://newswave-psi.vercel.app)
 
 ## 🙏 Acknowledgments
 
@@ -178,3 +178,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 ⭐ **If you found this project helpful, please give it a star!** ⭐
+
+**🌍 Live Demo:** [https://newswave-psi.vercel.app](https://newswave-psi.vercel.app)
